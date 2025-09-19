@@ -29,6 +29,7 @@ public class Application {
             collezione.aggiungiGiocoACollezione(new Videogioco(idVideogiochi,faker.esports().game(),numeroCasualeAnnoPubbl,prezzoCasuale, Piattaforma.PS5,durataGiocoCasuale, Generi.SOUL));
             collezione.aggiungiGiocoACollezione(new GiocoDaTavolo(idGiochiTavola,faker.book().title(),numeroCasualeAnnoPubbl,prezzoCasuale,numeroGiocatoriCausuale,durataMedia));
         }
+        //MENU CHE VIENE STAMPATO FINCHE NON SI PREME 0
         while (true){
         System.out.println("cosa vuoi vedere?" );
         System.out.println("premi 1 per visualizzare la collezione di giochi");
@@ -40,9 +41,11 @@ public class Application {
         System.out.println(  "premi 7 per avere statistiche genrali su tutta la collezione");
         System.out.println(  "premi 8 per trovare il gioco piu costoso");
         System.out.println( "premi 9 per la media di tutti i prezzi");
-            System.out.println("premi 10 per sapere qunati giochi sono presenti nella collezione");
+        System.out.println("premi 10 per sapere qunati giochi sono presenti nella collezione");
+            System.out.println("premi 11 per inserire un nuovo gioco alla collezione");
         System.out.println("premi 0 per uscire");
        int scelta= scanner.nextInt();
+       // IN BASE ALLA SCELTA SI ACCEDE A UN METODO
        switch (scelta){
            case(1):
                System.out.println(collezione);
@@ -83,6 +86,47 @@ public class Application {
                break;
            case(10):
                collezione.numeroGiochi();
+                break;
+           case(11):
+               System.out.println("vuoi aggiungere un videogioco?(si o no)");
+              String siNo= scanner.next();
+              if (siNo.equals("si")){
+                  System.out.println("come si chiama il videogioco?");
+                  scanner.nextLine(); //HO TROVATO QUESTA SOLUZIONE PER POTER RISOLVERE IL NEXT LINE CHE SALTA LA RIGA
+                  String titolo= scanner.nextLine();
+                  System.out.println("quando è stato pubblciato?");
+                  int dataPubbl = scanner.nextInt();
+                  scanner.nextLine();
+                  System.out.println("quanto costa? SEPARA I DICIMALI CON IL PUNTO");
+                  double prezzo2= Double.parseDouble(scanner.nextLine());
+                  System.out.println("quanto dura il gioc?");
+                  int durata = scanner.nextInt();
+                  scanner.nextLine();
+                 collezione.aggiungiGiocoACollezione(new Videogioco(random.nextInt(30000,39999)+"",titolo,dataPubbl,prezzo2,Piattaforma.PS5,durata,Generi.SPARATUTTO));
+                  System.out.println("gioco aggiunto alla collezione");
+                    break;
+              }else if(siNo.equals("no")){
+                  System.out.println("aggiungi gioco da tavola");
+                  System.out.println("come si chiama il gioco da tavola?");
+                  scanner.nextLine();
+                  String titolo2= scanner.nextLine();
+                  System.out.println("quando è stato pubblciato?");
+                  int dataPubbl2 = scanner.nextInt();
+                  scanner.nextLine();
+                  System.out.println("quanto costa? SEPARA I DICIMALI CON IL PUNTO");
+                  double prezzo3= Double.parseDouble(scanner.nextLine());
+                  System.out.println("per quanti giocatori è?");
+                  int numGiocatori= scanner.nextInt();
+                  scanner.nextLine();
+                  System.out.println("quanto dura mediamente una partita?");
+                  int durataPartita= scanner.nextInt();
+                  scanner.nextLine();
+
+                  collezione.aggiungiGiocoACollezione(new GiocoDaTavolo(random.nextInt(30000,39999)+"",titolo2,dataPubbl2,prezzo3,numGiocatori,durataPartita));
+                  System.out.println("gioco da tavola aggiunto alla collezione");
+                  break;
+              }
+
 
 
        } if(scelta==0){
