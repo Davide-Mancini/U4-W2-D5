@@ -31,9 +31,7 @@ public class Videogioco extends GiocoGenerale{
         return durataGioco;
     }
 
-    public void setDurataGioco(int durataGioco) {
-        this.durataGioco = durataGioco;
-    }
+
 
     @Override
     public String toString() {

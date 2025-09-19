@@ -3,11 +3,13 @@ package davidemancini;
 import com.github.javafaker.Faker;
 import davidemancini.entities.Collezione;
 import davidemancini.entities.GiocoDaTavolo;
+import davidemancini.entities.GiocoGenerale;
 import davidemancini.entities.Videogioco;
 import davidemancini.enums.Generi;
 import davidemancini.enums.Piattaforma;
 import davidemancini.exceptions.NumGiocaotoreMin2Magg10;
-import davidemancini.exceptions.StringNotValidException;
+import davidemancini.exceptions.SceltaNonValida;
+import davidemancini.exceptions.StringaNonValida;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -22,7 +24,7 @@ public class Application {
         Piattaforma[]piattaforma = Piattaforma.values(); //CREO ARRAY DI TIPO PIATTAFORMA CON AL SUO INTERNO I VALORI
         Generi[]generi = Generi.values();
 
-
+        GiocoGenerale giocomodifica = new Videogioco("10045","call of duty 4", 2004,15.99,Piattaforma.XBOX,21,Generi.SPARATUTTO);
 
         //CREAZIONE LISTA CON VIDEOGIOCHI E GIOCHI DA TAVOLO
         for (int i = 0; i < 20; i++) {
@@ -39,6 +41,7 @@ public class Application {
             collezione.aggiungiGiocoACollezione(new GiocoDaTavolo(idGiochiTavola,faker.book().title(),numeroCasualeAnnoPubbl,prezzoCasuale,numeroGiocatoriCausuale,durataMedia));
         }
         //MENU CHE VIENE STAMPATO FINCHE NON SI PREME 0
+
         while (true){
         System.out.println("cosa vuoi vedere?" );
         System.out.println("premi 1 per visualizzare la collezione di giochi");
@@ -53,8 +56,13 @@ public class Application {
         System.out.println("premi 10 per sapere qunati giochi sono presenti nella collezione");
             System.out.println("premi 11 per inserire un nuovo gioco alla collezione");
         System.out.println("premi 0 per uscire");
+            try {
+
        int scelta= scanner.nextInt();
        // IN BASE ALLA SCELTA SI ACCEDE A UN METODO
+            if(scelta>11){
+                throw new SceltaNonValida(scelta);
+            }
        switch (scelta){
            case(1):
                System.out.println(collezione);
@@ -82,7 +90,11 @@ public class Application {
                collezione.numeroGiochi();
                break;
            case (6):
-               //da finire
+               System.out.println("inserisci ID del gioco che vuoi modificiare");
+               scanner.nextLine();
+               String idGiocoDaModificare =  scanner.nextLine();
+               collezione.modificaGioco(idGiocoDaModificare,giocomodifica);
+               System.out.println("gioco modificato");
                break;
            case(7):
                collezione.stampaStats();
@@ -101,7 +113,7 @@ public class Application {
                System.out.println("vuoi aggiungere un videogioco?(si o no)");
               String siNo= scanner.next();
               if(!siNo.equals("si") && !siNo.equals("no") ){
-                  throw new StringNotValidException(siNo);
+                  throw new StringaNonValida(siNo);
               }
 
 
@@ -152,7 +164,7 @@ public class Application {
                   break;
               }
 
-               }catch (StringNotValidException ex){
+               }catch (StringaNonValida ex){
                    System.out.println(ex.getMessage());
                }
 
@@ -160,7 +172,9 @@ public class Application {
 
        } if(scelta==0){
        break;}
-        }
+        }catch (SceltaNonValida ex){
+                System.out.println(ex.getMessage());
+            }
 //        collezione.stampaCercaId("10008");
 //        collezione.stampaRicercaPrezzo(24);
 //        collezione.stampaCercaPerGIocatori(4);
@@ -179,4 +193,4 @@ public class Application {
 //                  System.out.println(collezione.cercaPerNumGiocatori(4));
 
     }
-}
+}}

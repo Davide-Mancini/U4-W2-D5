@@ -71,7 +71,16 @@ public class Collezione {
         System.out.println("il gioco piu costoso è :" + giocoPiuCostoso());
     }
     //METODO PER MODIFICA OGGETTO
+    public void modificaGioco(String id, GiocoGenerale nuovoGioco){
+        for (int i = 0; i < collezioneGiochi.size(); i++) {
+          GiocoGenerale  gioco = collezioneGiochi.get(i);
+            if (gioco.getId().equals(id)){
 
+        collezioneGiochi.set(i,nuovoGioco);
+        break;
+            }
+        }
+    }
 
     @Override
     public String toString() {

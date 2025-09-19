@@ -17,9 +17,7 @@ public class GiocoDaTavolo extends GiocoGenerale{
         return numeroGiocatori;
     }
 
-    public void setNumeroGiocatori(int numeroGiocatori) {
-        this.numeroGiocatori = numeroGiocatori;
-    }
+
 
     public int getDurataMedia() {
         return durataMedia;
