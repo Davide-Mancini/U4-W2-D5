@@ -6,27 +6,36 @@ import davidemancini.entities.GiocoDaTavolo;
 import davidemancini.entities.Videogioco;
 import davidemancini.enums.Generi;
 import davidemancini.enums.Piattaforma;
+import davidemancini.exceptions.NumGiocaotoreMin2Magg10;
+import davidemancini.exceptions.StringNotValidException;
 
 import java.util.Random;
 import java.util.Scanner;
 
 public class Application {
     public static void main(String[] args) {
+
         Random random = new Random();
         Scanner scanner = new Scanner(System.in);
         Faker faker = new Faker();
         Collezione collezione = new Collezione(); //ISTANZA DI COLLEZIONE
+        Piattaforma[]piattaforma = Piattaforma.values(); //CREO ARRAY DI TIPO PIATTAFORMA CON AL SUO INTERNO I VALORI
+        Generi[]generi = Generi.values();
+
+
 
         //CREAZIONE LISTA CON VIDEOGIOCHI E GIOCHI DA TAVOLO
         for (int i = 0; i < 20; i++) {
-            String idVideogiochi =(10000+i)+""; //ASSEGNO UN ID PROGRESSIVO A VIDEOGIOCHI COSI AD OGNI ITERAZIONE AUMENTA DI UNO (AVEVO FATTO CON RANDOM MA ERA DIFFICLE PROVARE IL CODICE)
-            String idGiochiTavola =(20000+i)+"";//ASSEGNO UN ID PROGRESSIVO CHE INIZIA CON 2 A GIOCHI DA TAVOLO COSI AD OGNI ITERAZIONE AUMENTA DI UNO (AVEVO FATTO CON RANDOM MA ERA DIFFICLE PROVARE IL CODICE)
+            String idVideogiochi =(10000+i)+"";     //ASSEGNO UN ID PROGRESSIVO A VIDEOGIOCHI COSI AD OGNI ITERAZIONE AUMENTA DI UNO (AVEVO FATTO CON RANDOM MA ERA DIFFICLE PROVARE IL CODICE)
+            String idGiochiTavola =(20000+i)+"";  //ASSEGNO UN ID PROGRESSIVO CHE INIZIA CON 2 A GIOCHI DA TAVOLO COSI AD OGNI ITERAZIONE AUMENTA DI UNO (AVEVO FATTO CON RANDOM MA ERA DIFFICLE PROVARE IL CODICE)
             int numeroCasualeAnnoPubbl = random.nextInt(1990,2025);
-            double prezzoCasuale = random.nextDouble(0.99,150.99);
+            double prezzoCasuale = Math.round(random.nextDouble(0.99,150.99)*100.0)/100.0;   //MI PERMETTE DI LASCIARE SOLO DUE DECIMALI
             int durataGiocoCasuale = random.nextInt(2,150);
             int durataMedia = random.nextInt(15,150);
             int numeroGiocatoriCausuale = random.nextInt(2,10);
-            collezione.aggiungiGiocoACollezione(new Videogioco(idVideogiochi,faker.esports().game(),numeroCasualeAnnoPubbl,prezzoCasuale, Piattaforma.PS5,durataGiocoCasuale, Generi.SOUL));
+            Generi generiCasuali = generi[random.nextInt(0, generi.length-1)] ; // RANDOMIZZO SCELTA DELL'ENUM GRAZIE AI VALORI RECUPERATI, DA 0 ALLA LUNGHEZZA DI GENERI CHE è UN ARRAY
+            Piattaforma piattaformaCasuale = piattaforma[random.nextInt(0, piattaforma.length-1)]; // RANDOMIZZO SCELTA DELL'ENUM GRAZIE AI VALORI RECUPERATI, DA 0 ALLA LUNGHEZZA DI PIATTAFORME CHE è UN ARRAY
+            collezione.aggiungiGiocoACollezione(new Videogioco(idVideogiochi,faker.esports().game(),numeroCasualeAnnoPubbl,prezzoCasuale, piattaformaCasuale,durataGiocoCasuale, generiCasuali));
             collezione.aggiungiGiocoACollezione(new GiocoDaTavolo(idGiochiTavola,faker.book().title(),numeroCasualeAnnoPubbl,prezzoCasuale,numeroGiocatoriCausuale,durataMedia));
         }
         //MENU CHE VIENE STAMPATO FINCHE NON SI PREME 0
@@ -79,7 +88,7 @@ public class Application {
                collezione.stampaStats();
                break;
            case (8):
-               collezione.giocoPiuCostoso();
+               collezione.stampaGiocoPiuCostoso();
                break;
            case(9):
                collezione.mediaPrezzi();
@@ -88,9 +97,15 @@ public class Application {
                collezione.numeroGiochi();
                 break;
            case(11):
+               try {
                System.out.println("vuoi aggiungere un videogioco?(si o no)");
               String siNo= scanner.next();
-              if (siNo.equals("si")){
+              if(!siNo.equals("si") && !siNo.equals("no") ){
+                  throw new StringNotValidException(siNo);
+              }
+
+
+                   if (siNo.equals("si")){
                   System.out.println("come si chiama il videogioco?");
                   scanner.nextLine(); //HO TROVATO QUESTA SOLUZIONE PER POTER RISOLVERE IL NEXT LINE CHE SALTA LA RIGA
                   String titolo= scanner.nextLine();
@@ -118,7 +133,17 @@ public class Application {
                   System.out.println("per quanti giocatori è?");
                   int numGiocatori= scanner.nextInt();
                   scanner.nextLine();
-                  System.out.println("quanto dura mediamente una partita?");
+                  try {
+                      if(numGiocatori<2 || numGiocatori>10){
+                          throw new NumGiocaotoreMin2Magg10(numGiocatori);
+                      }
+                  }catch (NumGiocaotoreMin2Magg10 ex){
+                      System.out.println("errore " + ex.getMessage());
+                      System.out.println("imposto il numero minimo");
+                      numGiocatori=2;
+                  }
+
+                  System.out.println("quanti minuti dura mediamente una partita?");
                   int durataPartita= scanner.nextInt();
                   scanner.nextLine();
 
@@ -126,6 +151,10 @@ public class Application {
                   System.out.println("gioco da tavola aggiunto alla collezione");
                   break;
               }
+
+               }catch (StringNotValidException ex){
+                   System.out.println(ex.getMessage());
+               }
 
 
 

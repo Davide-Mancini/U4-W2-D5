@@ -64,9 +64,15 @@ public class Collezione {
         return collezioneGiochi.stream().sorted(Comparator.comparing(gioco->gioco.getPrezzo())).toList();
     }
     public List<GiocoGenerale> giocoPiuCostoso(){
-        System.out.println("il gioco piu costoso è :");
+
         return giochiOrdinatiPerPrezzo().stream().sorted(Comparator.comparing(GiocoGenerale::getPrezzo).reversed()).limit(1).toList();
     }
+    public void stampaGiocoPiuCostoso (){
+        System.out.println("il gioco piu costoso è :" + giocoPiuCostoso());
+    }
+    //METODO PER MODIFICA OGGETTO
+
+
     @Override
     public String toString() {
         return "Collezione{" +

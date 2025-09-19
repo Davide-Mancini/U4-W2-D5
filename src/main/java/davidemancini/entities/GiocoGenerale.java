@@ -42,8 +42,8 @@ public abstract class GiocoGenerale {
         return "GiocoGenerale{" +
                 "id='" + id + '\'' +
                 ", titolo='" + titolo + '\'' +
-                ", annoPubblicazione=" + annoPubblicazione +
-                ", prezzo=" + prezzo +
+                ", annoPubblicazione= " + annoPubblicazione +
+                ", prezzo= " + prezzo +
                 '}';
     }
 }

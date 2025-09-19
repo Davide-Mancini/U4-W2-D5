@@ -40,11 +40,11 @@ public class Videogioco extends GiocoGenerale{
         return "Videogioco{" +
                 "id='" + id + '\'' +
                 ", titolo='" + titolo + '\'' +
-                ", annoPubblicazione=" + annoPubblicazione +
-                ", prezzo=" + prezzo +
-                "piattaforma=" + piattaforma +
-                ", durataGioco=" + durataGioco +
-                ", genere=" + genere +
+                ", annoPubblicazione= " + annoPubblicazione +
+                ", prezzo= " + prezzo +
+                ", piattaforma= " + piattaforma +
+                ", durataGioco= " + durataGioco +
+                ", genere= " + genere +
                 '}';
     }
 }
